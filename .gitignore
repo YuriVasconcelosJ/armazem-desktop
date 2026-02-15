@@ -86,4 +86,4 @@ Thumbs.db
 # Arquivos com credenciais
 config-local.properties
 application-local.properties
-.env
+config.properties
