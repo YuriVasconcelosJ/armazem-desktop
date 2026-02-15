@@ -1,14 +1,12 @@
 package br.com.project.util;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
-
 import javax.sql.DataSource;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-
 import org.flywaydb.core.Flyway;
 
 public class DataBase {
@@ -16,19 +14,25 @@ public class DataBase {
     private static final HikariDataSource dataSource;
 
     static {
-        try {
-            Properties props = new Properties();
-            props.load(new FileInputStream("config.properties"));
+        // 1. Carregar o arquivo do Classpath (src/main/resources)
+        Properties props = new Properties();
+        try (InputStream is = DataBase.class.getClassLoader().getResourceAsStream("config.properties")) {
+            
+            if (is == null) {
+                throw new RuntimeException("Arquivo config.properties não encontrado em src/main/resources");
+            }
+            
+            props.load(is);
 
             String url = props.getProperty("db.url");
             String user = props.getProperty("db.user");
             String password = props.getProperty("db.password");
 
             if (url == null || user == null || password == null) {
-                throw new RuntimeException("Configuração do banco incompleta.");
+                throw new RuntimeException("Configuração do banco incompleta no config.properties.");
             }
 
-            // 🔹 1. Configura Hikari
+            // 2. Configura HikariCP
             HikariConfig config = new HikariConfig();
             config.setJdbcUrl(url);
             config.setUsername(user);
@@ -42,9 +46,11 @@ public class DataBase {
 
             dataSource = new HikariDataSource(config);
 
-            // 🔹 2. Roda Flyway
+            // 3. Roda Flyway usando o PRÓPRIO dataSource do Hikari
+            // Isso é melhor do que passar a URL/User de novo, pois evita abrir 
+            // conexões extras desnecessárias.
             Flyway flyway = Flyway.configure()
-                    .dataSource(url, user, password)
+                    .dataSource(dataSource) // Use o objeto dataSource criado acima
                     .locations("classpath:db/migration")
                     .load();
 
