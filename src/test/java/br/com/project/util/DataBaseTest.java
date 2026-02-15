@@ -1,19 +1,18 @@
 package br.com.project.util;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.sql.Connection;
-
+import java.sql.SQLException;
 import javax.sql.DataSource;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DataBaseTest {
 
     @Test
     void DeveCriarOBancoERetornarDataSource() throws SQLException {
-
         DataSource ds = DataBase.getDataSource();
 
         assertNotNull(ds, "O dataSource não deve ser nulo");
@@ -24,5 +23,4 @@ public class DataBaseTest {
             System.out.println("Conexão com o banco de dados estabelecida com sucesso");
         }
     }
-    
 }
