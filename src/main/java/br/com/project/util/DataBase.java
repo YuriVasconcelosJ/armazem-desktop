@@ -9,7 +9,9 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.flywaydb.core.Flyway;
 
-public class DataBase {
+public final class DataBase {
+
+    private DataBase(){}
 
     private static final HikariDataSource dataSource;
 
