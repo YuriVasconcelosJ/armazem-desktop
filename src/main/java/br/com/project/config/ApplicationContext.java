@@ -3,6 +3,7 @@ package br.com.project.config;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.com.project.controller.LoginController;
 import br.com.project.dao.LoginDao;
 import br.com.project.service.LoginService;
 public class ApplicationContext {
@@ -23,11 +24,13 @@ public class ApplicationContext {
     private void registerBeans() {
 
         LoginDao loginDao = new LoginDao();
+        beans.put(LoginDao.class, loginDao);
 
         LoginService loginService = new LoginService(loginDao);
-
-        beans.put(LoginDao.class, loginDao);
         beans.put(LoginService.class, loginService);
+        
+        LoginController loginController = new LoginController(loginService);
+        beans.put(LoginController.class, loginController);
     }
 
     public <T> T getBean(Class<T> type) {
