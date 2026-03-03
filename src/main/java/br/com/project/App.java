@@ -15,7 +15,7 @@ public class App extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		ScreenManager.setStage(stage);
-		ScreenManager.switchScene("/br/com/project/view/LoginScreen.fxml");
+		ScreenManager.switchScene("/view/LoginScreen.fxml");
 	}
 
 	public static void main(String[] args) {

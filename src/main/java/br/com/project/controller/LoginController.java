@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 
 public class LoginController {
 
@@ -17,6 +18,9 @@ public class LoginController {
 	public LoginController(LoginService loginService) {
 		this.loginService = loginService;
 	}
+	
+	@FXML
+	private VBox container;
 
 	@FXML
 	private Button btnEnter;
@@ -29,6 +33,7 @@ public class LoginController {
 
 	@FXML
 	private void autenticate(ActionEvent event) {
+		
 		// Alterar o sysout por popups
 		String user = txtUser.getText().trim();
 		String password = txtPassword.getText().trim();
